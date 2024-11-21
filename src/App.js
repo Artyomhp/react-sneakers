@@ -7,6 +7,8 @@ const arr = []
 
 function App() {
   const [items, setItems] = React.useState([])
+  const [cartItems, setCartItems] = React.useState([])
+  const [searchValue, setSearchValue] = React.useState('')
   const [cartOpened, setCartOpened] = React.useState(false)
 
 
@@ -19,25 +21,43 @@ function App() {
     })
   }, [])
 
+
+  const onAddToCart = (obj) => {
+    if (cartItems.includes(obj)) {
+      alert('товар уже добавлен в корзину')
+    } else { setCartItems(prev => [...prev, obj]) }
+
+
+  }
+
+  const onChangeSearchInput = (event) => {
+    setSearchValue(event.target.value)
+  }
+
+
   return (
     <div className="wrapper clear">
 
-      {cartOpened && <Drawer onClose={() => setCartOpened(false)} />}
+      {cartOpened && <Drawer items={cartItems} onClose={() => setCartOpened(false)} />}
       <Header onClickCart={() => setCartOpened(true)} />
       <div className="content p-40">
         <div className="d-flex align-center mb-40 justify-between">
           <h1>Все кроссовки</h1>
           <div className="search-block d-flex">
             <img src="/img/search.svg" alt="search" />
-            <input type="text" placeholder="Поиск..." />
+            <input type="text" onChange={onChangeSearchInput} placeholder="Поиск..." />
+            {searchValue && (<img onClick={() => setSearchValue('')} className="removeBtn" src="/img//btn-remove.svg" alt="Remove" />)}
           </div>
         </div>
         <div className="d-flex flex-wrap">
-          {items.map((obj) => (
+          {items.map((item, index) => (
             <Card
-              title={obj.title}
-              price={obj.price}
-              imageUrl={obj.imageUrl}
+              key={index}
+              title={item.title}
+              price={item.price}
+              imageUrl={item.imageUrl}
+              onFavorite={() => console.log('Добавили в закладки')}
+              onPlus={(obj) => onAddToCart(obj)}
             />
           ))}
         </div>
