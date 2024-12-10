@@ -16,6 +16,8 @@ function App() {
   const [cartOpened, setCartOpened] = React.useState(false)
   const [isLoading, setIsLoading] = React.useState(true)
 
+  console.log(JSON.stringify(cartItems))
+
 
   // Вот это надо изучить, а также деструктуризацию, а также пересмотреть с 15-й минуты третьего часа
   React.useEffect(() => {
