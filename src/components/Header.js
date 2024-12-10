@@ -1,6 +1,6 @@
 import React from 'react'
+import AppContext from "../context";
 import { Link } from 'react-router-dom';
-import AppContext from '../context';
 
 function Header(props) {
     const { cartItems } = React.useContext(AppContext)
