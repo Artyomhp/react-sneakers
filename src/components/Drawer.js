@@ -1,13 +1,16 @@
 import React from 'react'
 import Info from './Info'
-import AppContext from "../context";
+// import AppContext from "../context";
 import axios from 'axios';
 
 function Drawer({ onClose, onRemove, items = [] }) {
-    const { cartItems, setCartItems } = React.useContext(AppContext)
+    // const { cartItems, setCartItems } = React.useContext(AppContext)
     const [orderId, setOrderId] = React.useState(null)
     const [isOrderComplete, setIsOrderComplete] = React.useState(false)
     const [isLoading, setIsLoading] = React.useState(false)
+
+    // const totalPrice = cartItems.reduce((sum, obj) => obj.price + sum, 0)
+
 
 
     const onCLickOrder = async () => {
@@ -56,7 +59,7 @@ function Drawer({ onClose, onRemove, items = [] }) {
                                     <li>
                                         <span>Налог 5%:</span>
                                         <div></div>
-                                        <b>1 099 руб.</b>
+                                        <b>{totalPrice / 100 * 5} руб.</b>
                                     </li>
                                 </ul>
                                 <button disabled={isLoading} onClick={onCLickOrder} className="greenButton">Оформить заказ <img src="\img\arrow.svg" alt="Arrow" /></button>
