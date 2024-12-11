@@ -1,25 +1,25 @@
 import React from 'react'
-import Info from './Info'
-// import AppContext from "../context";
 import axios from 'axios';
 
+import Info from './Info'
+import { useCart } from '../hooks/useCart'
+
 function Drawer({ onClose, onRemove, items = [] }) {
-    // const { cartItems, setCartItems } = React.useContext(AppContext)
+    const { cartItems, setCartItems, totalPrice } = useCart()
     const [orderId, setOrderId] = React.useState(null)
     const [isOrderComplete, setIsOrderComplete] = React.useState(false)
     const [isLoading, setIsLoading] = React.useState(false)
 
-    // const totalPrice = cartItems.reduce((sum, obj) => obj.price + sum, 0)
 
 
 
     const onCLickOrder = async () => {
         try {
             setIsLoading(true)
-            const { data } = await axios.post('https://6747a10738c8741641d73eb6.mockapi.io/orders', {
+            const { data } = await axios.post('https://8b02527e160ae389.mokky.dev/orders', {
                 items: cartItems
             })
-            await axios.put('https://6747a10738c8741641d73eb6.mockapi.io/cart', [])
+            await axios.patch('https://8b02527e160ae389.mokky.dev/cart', [])
             setOrderId(data.id)
             setIsOrderComplete(true)
             setCartItems([])
@@ -38,7 +38,7 @@ function Drawer({ onClose, onRemove, items = [] }) {
                             <div className="items">
                                 {items.map((obj) => (
                                     <div>
-                                        <div className="cartItem d-flex align-center mb-20">
+                                        <div key={obj.id} className="cartItem d-flex align-center mb-20">
                                             <div style={{ backgroundImage: `url(${obj.imageUrl})` }} className="cartItemImg"></div>
                                             <div className="mr-20 flex">
                                                 <p className="mb-5">{obj.title}</p>
@@ -59,23 +59,19 @@ function Drawer({ onClose, onRemove, items = [] }) {
                                     <li>
                                         <span>Налог 5%:</span>
                                         <div></div>
-<<<<<<< HEAD
-    <b>{(totalPrice / 100) * 5} руб.</b>
-=======
                                         <b>{totalPrice / 100 * 5} руб.</b>
->>>>>>> cf2b1fd37ec6f85dd0dd86b27eeda7808a57c762
                                     </li >
                                 </ul >
-        <button disabled={isLoading} onClick={onCLickOrder} className="greenButton">Оформить заказ <img src="\img\arrow.svg" alt="Arrow" /></button>
+                                <button disabled={isLoading} onClick={onCLickOrder} className="greenButton">Оформить заказ <img src="\img\arrow.svg" alt="Arrow" /></button>
                             </div >
                         </div >
                     ) : (
-        <Info
-            image={isOrderComplete ? "/img/complete-order.jpeg" : "/img/empty-cart.jpeg"}
-            title={isOrderComplete ? "Заказ оформлен!" : "Корзина пустая"}
-            description={isOrderComplete ? `Ваш заказ #${orderId} скоро будет передан курьерской доставке` : "Добавьте котя бы одну пару кроссовок, чтобы сделать заказ."} />
-    )
-}
+                        <Info
+                            image={isOrderComplete ? "/img/complete-order.jpeg" : "/img/empty-cart.jpeg"}
+                            title={isOrderComplete ? "Заказ оформлен!" : "Корзина пустая"}
+                            description={isOrderComplete ? `Ваш заказ #${orderId} скоро будет передан курьерской доставке` : "Добавьте котя бы одну пару кроссовок, чтобы сделать заказ."} />
+                    )
+                }
 
             </div >
         </div >
